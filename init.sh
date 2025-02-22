@@ -2,10 +2,10 @@
 
 set -e
 
-echo "Creating anonymous user with uid ${FTP_UID:=1000} and gid ${FTP_GID:=1000}"
+echo "Creating anonymous user with uid ${FTP_UID} and gid ${FTP_GID}"
 
-groupadd -g ${FTP_GID:=1000} ftp
-useradd -u ${FTP_UID:=1000} -g ftp -d /data ftp
+groupadd -g ${FTP_GID} ftp
+useradd -u ${FTP_UID} -g ftp -d /data ftp
 
 if [ ! -d "/data" ]; then
   echo "Creating data directory. Warning: It seems you forgot to mount the volume! All data will be lost when the container dies!"
@@ -23,7 +23,7 @@ fi
 
 if [ "$#" -eq 0 ]; then
   echo "Starting pure-ftpd with default args"
-  /bin/pure-ftpd -e -p ${PASV_PORTS:="30000:30005"}
+  /bin/pure-ftpd -e -c 3 -C 3 -p ${PASV_PORTS}
 else
   echo "Starting pure-ftpd with custom args"
   /bin/pure-ftpd "$@"

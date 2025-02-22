@@ -1,0 +1,25 @@
+name: Build and push
+
+on:
+  workflow_dispatch:
+
+env:
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  REGISTRY_USER: ${{ github.actor }}
+  REGISTRY_PASSWORD: ${{ github.token }}
+
+jobs:
+  build-n-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install nix
+        uses: DeterminateSystems/nix-installer-action@main
+      - name: Build container image
+        run: |
+          nix build
+          skopeo copy --dest-creds="${{ env.REGISTRY_USER }}:${{ env.REGISTRY_PASSWORD }}" docker-archive:result "${{ env.IMAGE_REGISTRY }}"
+
