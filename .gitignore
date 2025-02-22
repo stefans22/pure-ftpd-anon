@@ -1,0 +1,6 @@
+# OS specific stuff
+.DS_Store
+
+# Results of nix build
+result
+
