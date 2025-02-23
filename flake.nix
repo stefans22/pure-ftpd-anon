@@ -10,7 +10,7 @@
       initScript = pkgs.writeTextDir "/app/init.sh" (builtins.readFile ./init.sh);
 
       dockerImage = pkgs.dockerTools.buildImage {
-        name = "ghcr.io/stefans22/pure-ftpd-anon";
+        name = "pure-ftpd-anon";
         architecture = "amd64";
 
         copyToRoot = pkgs.buildEnv {
