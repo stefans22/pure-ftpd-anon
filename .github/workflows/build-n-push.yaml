@@ -21,5 +21,5 @@ jobs:
       - name: Build container image
         run: |
           nix build
-          skopeo copy --dest-creds="${{ env.REGISTRY_USER }}:${{ env.REGISTRY_PASSWORD }}" docker-archive:result "${{ env.IMAGE_REGISTRY }}"
+          skopeo copy --dest-creds="${{ env.REGISTRY_USER }}:${{ env.REGISTRY_PASSWORD }}" docker-archive:result "${{ env.IMAGE_REGISTRY }}/pure-fpd-anon:latest"
 
