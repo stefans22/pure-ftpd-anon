@@ -7,7 +7,7 @@
     let
       pkgs = import nixpkgs { system = "x86_64-linux"; };
 
-      initScript = pkgs.writeTextDir "/bin/run.sh" (builtins.readFile ./run.sh);
+      initScript = pkgs.writeShellScriptBin "run.sh" (builtins.readFile ./run.sh);
 
       dockerImage = pkgs.dockerTools.buildImage {
         name = "pure-ftpd-anon";
@@ -20,7 +20,7 @@
         };
 
         config = {
-          Entrypoint = [ "/bin/bash" "/bin/run.sh" ];
+          Cmd = [ "/bin/run.sh" ];
           Volumes = {
             "/srv" = {};
           };
