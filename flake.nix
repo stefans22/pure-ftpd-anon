@@ -33,7 +33,7 @@
             "30004" = {};
             "30005" = {};
           };
-          Env = [ "FTP_UID=1000" "FTP_GID=1000" "FTP_HOME=/srv" "UPLOAD_DIR_NAME=''" "PASV_PORTS='30000:30005'" ];
+          Env = [ "FTP_UID=1000" "FTP_GID=1000" "FTP_HOME=/srv" "UPLOAD_DIR_NAME=''" "PASV_PORTS=30000:30005" ];
         };
       };
 
