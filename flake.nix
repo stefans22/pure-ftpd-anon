@@ -39,7 +39,7 @@
 
       devShell = pkgs.mkShell {
         name = "development shell";
-        packages = with pkgs; [ podman skopeo dive inetutils ];
+        packages = with pkgs; [ podman skopeo jq dive inetutils ];
       };
     in
     {

@@ -2,6 +2,8 @@ name: Build and push
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ main ]
 
 env:
   IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
@@ -24,5 +26,8 @@ jobs:
       - name: Build container image
         run: |
           nix build
-          skopeo copy --dest-creds="${{ env.REGISTRY_USER }}:${{ env.REGISTRY_PASSWORD }}" docker-archive:result "docker://${{ env.IMAGE_REGISTRY }}/pure-fpd-anon:latest"
+      - name: Push container image
+        run: |
+          export IMAGE_AND_TAG=$(skopeo list-tags docker-archive:result | jq -r ".Tags[0]")
+          skopeo copy --dest-creds="${{ env.REGISTRY_USER }}:${{ env.REGISTRY_PASSWORD }}" docker-archive:result "docker://${{ env.IMAGE_REGISTRY }}/${IMAGE_AND_TAG}"
 
