@@ -7,7 +7,7 @@
     let
       pkgs = import nixpkgs { system = "x86_64-linux"; };
 
-      initScript = pkgs.writeTextDir "/app/init.sh" (builtins.readFile ./init.sh);
+      initScript = pkgs.writeTextDir "/bin/run.sh" (builtins.readFile ./run.sh);
 
       dockerImage = pkgs.dockerTools.buildImage {
         name = "pure-ftpd-anon";
@@ -16,13 +16,13 @@
         copyToRoot = pkgs.buildEnv {
           name = "root-layer";
           paths = [ pkgs.pure-ftpd pkgs.bash pkgs.coreutils pkgs.shadow initScript ];
-          pathsToLink = [ "/bin" "/app" ];
+          pathsToLink = [ "/bin" ];
         };
 
         config = {
-          Entrypoint = [ "/bin/bash" "/app/init.sh" ];
+          Entrypoint = [ "/bin/bash" "/bin/run.sh" ];
           Volumes = {
-            "/data" = {};
+            "/srv" = {};
           };
           ExposedPorts = {
             "21" = {};
@@ -33,7 +33,7 @@
             "30004" = {};
             "30005" = {};
           };
-          Env = [ "FTP_UID=1000" "FTP_GID=1000" "UPLOAD_DIR_NAME=''" "PASV_PORTS='30000:30005'" ];
+          Env = [ "FTP_UID=1000" "FTP_GID=1000" "FTP_HOME=/srv" "UPLOAD_DIR_NAME=''" "PASV_PORTS='30000:30005'" ];
         };
       };
 
